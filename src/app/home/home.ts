@@ -1,4 +1,11 @@
-import { Component, signal, computed } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  effect,
+  inject,
+  Injector,
+} from '@angular/core';
 import { Task } from '../../modules/util';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -29,6 +36,28 @@ export class Home {
   ]);
 
   filter = signal<'all' | 'pending' | 'completed'>('all');
+
+  injector = inject(Injector);
+
+  ngOnInit() {
+    let storage = localStorage.getItem('tasks');
+    if (storage) {
+      let tasks1 = JSON.parse(storage);
+      this.tasks.set(tasks1);
+    }
+    this.trackTasks();
+  }
+
+  trackTasks() {
+    effect(
+      () => {
+        let tasks = this.tasks();
+
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+      },
+      { injector: this.injector }
+    );
+  }
 
   taskByFilter = computed(() => {
     //aca se coloca lo que queremos que 'reaccione'
