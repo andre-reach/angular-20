@@ -1,0 +1,16 @@
+se pueden manejar los form con ReactiveFormsModule.
+
+
+form = new FormControl()
+nos podemos suscribir tambien, y lo bueno
+de este reactive form, es que ya usa
+signals.
+
+if we subscribe to the listener, it's going to be updating the value each time it changes.
+control.valueChanges.subscribe(), and we should unsubscribe if we don't need anymore to avoid memory leaks
+
+
+
+----computed states
+
+son estados que derivan de otros estados. la idea seria sincronizar las actualizaciones, y todo se basa en signals
